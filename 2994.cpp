@@ -32,13 +32,13 @@ int main () {
     // process
     for (int i=0; i<n; ++i) {
         int vs=INT_MAX, ve=INT_MAX;
-        auto qs = lower_bound(q.begin(), q.end(), make_pair(o[i].s, 0));
-        auto j = qs;
-        for (; j!=q.end() && (*j).first<o[i].e; ++j) {
+        auto qs = q.lower_bound(make_pair(o[i].s, 0));
+        auto qe = q.upper_bound(make_pair(o[i].e, INT_MAX));
+        for (auto j=qs; j!=qe; ++j) {
             vs = min(vs, (*j).second + abs((*j).first-o[i].s));
             ve = min(ve, (*j).second + abs((*j).first-o[i].e));
         }
-        q.erase(qs, j);
+        q.erase(qs, qe);
         if (vs != INT_MAX) q.insert(make_pair(o[i].s, vs));
         if (ve != INT_MAX) q.insert(make_pair(o[i].e, ve));
     }
